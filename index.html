@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For Sabrine ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --env-body: #dc2626; /* Deeper, realistic red */
+            --env-flap: #ef4444; /* Brighter flap */
+            --heart: #be123c;
+            /* Realistic Night Sky Gradient */
+            --sky-bg: radial-gradient(circle at center, #0a1128 0%, #01040a 100%);
+            --paper: #fffcf8;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; background: var(--sky-bg);
+            font-family: 'Quicksand', sans-serif; overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        /* --- New Starry Night Background --- */
+        .night-sky { position: absolute; width: 100%; height: 100%; z-index: 0; }
+        
+        /* Twinkling Stars (Countless) */
+        .stars-container { position: absolute; width: 100%; height: 100%; }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: twinkle 5s ease-in-out infinite;
+        }
+        @keyframes twinkle { 0%, 100% { opacity: 0.8; } 50% { opacity: 0.2; } }
+
+        /* Rapid Shooting Stars */
+        .shooting-stars-container { position: absolute; width: 100%; height: 100%; transform: rotateZ(-45deg); }
+        .shooting-star {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+            filter: drop-shadow(0 0 5px white);
+            border-radius: 999px;
+            animation: shoot 5s linear infinite;
+        }
+        @keyframes shoot {
+            0% { transform: translateX(0); width: 0; opacity: 1; }
+            10% { transform: translateX(150px); width: 150px; opacity: 1; }
+            40% { transform: translateX(600px); width: 150px; opacity: 0; }
+            100% { transform: translateX(600px); width: 150px; opacity: 0; }
+        }
+
+        /* The Envelope (Classic Geometry) */
+        .wrapper { position: relative; z-index: 10; cursor: pointer; text-align: center; }
+        .envelope {
+            width: 320px; height: 220px; background: var(--env-body);
+            position: relative; border-radius: 0 0 10px 10px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            display: flex; justify-content: center; align-items: center;
+        }
+        .envelope::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            border-top: 120px solid var(--env-flap);
+            border-left: 160px solid transparent; border-right: 160px solid transparent;
+            transform-origin: top; transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1); z-index: 2;
+        }
+        .envelope.open::before { transform: rotateX(180deg); }
+
+        /* Centered CSS Heart Seal */
+        .heart-seal {
+            position: absolute; top: 105px; left: 145px;
+            width: 30px; height: 30px; background: var(--heart);
+            transform: rotate(45deg); z-index: 3;
+            transition: opacity 0.3s;
+        }
+        .heart-seal::before, .heart-seal::after {
+            content: ''; width: 30px; height: 30px; background: var(--heart);
+            border-radius: 50%; position: absolute;
+        }
+        .heart-seal::before { top: -15px; left: 0; }
+        .heart-seal::after { top: 0; left: -15px; }
+        .envelope.open .heart-seal { opacity: 0; }
+
+        .tap-text {
+            margin-top: 25px; color: #f1f5f9; font-size: 1.1rem;
+            letter-spacing: 0.5px; font-weight: 500;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+            display: flex; align-items: center; gap: 8px; justify-content: center;
+            transition: opacity 0.3s;
+        }
+
+        /* The Revealed Letter Card */
+        .card {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+            width: 88%; max-width: 380px; max-height: 75vh; background: var(--paper);
+            padding: 30px; border-radius: 20px; z-index: 100;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+            border: 4px solid #fee2e2;
+        }
+        .card.show { transform: translate(-50%, -50%) scale(1); }
+        h2 { font-family: 'Great Vibes', cursive; color: #b91c1c; font-size: 2.9rem; text-align: center; margin: 10px 0 15px 0; }
+        .content { line-height: 1.7; color: #1e293b; white-space: pre-line; font-size: 1.05rem; }
+        .footer { margin-top: 25px; text-align: right; color: #b91c1c; font-weight: 600; font-size: 1.1rem; }
+    </style>
+</head>
+<body>
+
+    <div class="night-sky">
+        <div class="stars-container" id="stars"></div>
+        <div class="shooting-stars-container" id="shootingStars"></div>
+    </div>
+
+    <div class="wrapper" id="envWrapper" onclick="openMagic()">
+        <div class="envelope" id="env">
+            <div class="heart-seal"></div>
+        </div>
+        <div class="tap-text" id="hint">
+            <span>Tap to open, Sabrine</span>
+            <span class="sparkle">✨</span>
+        </div>
+    </div>
+
+    <div class="card" id="letterCard">
+        <h2>Hi Sabrine,</h2>
+        <div class="content">
+            I’m sorry for not wishing happy birthday, but I wanted to let you know that you genuinely are the best thing that has ever happened to me in my entire life.
+
+            I love seeing you happy and I love the way you smile and laugh. I love your little quirks and when you get the random energy out of nowhere. I love when you rely on me. I love when you trust me with everything.
+
+            You made me realize that I was capable of doing some stuff I was never able to do, you gave me confidence and strength when I needed it most—you never doubted my abilities.
+
+            With you I had the best memories of my life, stuff that I will never forget. You did a lot for me and I want to thank you for that. I will never forget the love that you showed me. You’re the only person that I trust with my whole heart, you supported and encouraged me when no one did. You took care of me when I got sick and you never complained.
+
+            I will always be there for you no matter what. You’re my light and my pride. I’m glad I met you and I would never change that.
+        </div>
+        <div class="footer">— Soufiane</div>
+    </div>
+
+    <script>
+        function openMagic() {
+            document.getElementById('env').classList.add('open');
+            document.getElementById('hint').style.opacity = '0';
+            setTimeout(() => { document.getElementById('letterCard').classList.add('show'); }, 800);
+        }
+
+        // Night Sky Generator
+        const starsContainer = document.getElementById('stars');
+        const shootingStarsContainer = document.getElementById('shootingStars');
+
+        // Create Static/Twinkling Stars (Lots)
+        const starCount = 150; 
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            
+            // Random sizes and positions
+            const size = Math.random() * 2 + 1; // 1px to 3px
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.top = Math.random() * 100 + 'vh';
+            star.style.left = Math.random() * 100 + 'vw';
+            
+            // Vary twinkle speeds
+            star.style.animationDelay = (Math.random() * -5) + 's';
+            star.style.animationDuration = (Math.random() * 3 + 3) + 's'; 
+
+            starsContainer.appendChild(star);
+        }
+
+        // Create Rapid Shooting Stars (Sparsely, looping)
+        const shootingStarCount = 5; 
+        for (let i = 0; i < shootingStarCount; i++) {
+            const shootingStar = document.createElement('div');
+            shootingStar.className = 'shooting-star';
+            
+            // Sparse positions, faster speeds
+            shootingStar.style.top = Math.random() * 80 + 10 + 'vh'; // Avoid screen edges
+            shootingStar.style.left = Math.random() * 80 + 10 + 'vw';
+            
+            // Rapid loop with random start delays
+            shootingStar.style.animationDelay = (Math.random() * 10) + 's'; 
+            shootingStar.style.animationDuration = (Math.random() * 1 + 1) + 's'; // 1-2 seconds rapid move
+
+            shootingStarsContainer.appendChild(shootingStar);
+        }
+    </script>
+</body>
+</html>
